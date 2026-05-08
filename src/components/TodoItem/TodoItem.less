@@ -1,0 +1,189 @@
+.todo-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px var(--color-shadow), 0 1px 2px var(--color-shadow);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  // 背景操作层
+  .todo-item-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: var(--radius-sm);
+    z-index: 0;
+    transition: background-color 0.3s ease;
+
+    &.bg-delete {
+      background: linear-gradient(135deg, #fee2e2, #fecaca);
+      justify-content: flex-end;
+    }
+
+    &.bg-complete {
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      justify-content: flex-start;
+    }
+
+    .bg-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .bg-label-delete {
+      color: var(--color-danger);
+    }
+
+    .bg-label-complete {
+      color: var(--color-success);
+    }
+  }
+
+  // 前景内容层
+  .todo-item-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    gap: 14px;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+    touch-action: pan-y;
+    user-select: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &.dragging {
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      transition: box-shadow 0.15s ease;
+    }
+
+    &.released {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+  }
+
+  // 复选框
+  .todo-checkbox {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+
+    &:hover {
+      border-color: var(--color-primary);
+    }
+
+    &.checked {
+      background: var(--color-success);
+      border-color: var(--color-success);
+
+      .check-icon {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .check-icon {
+      color: white;
+      font-size: 12px;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+
+  // 文本
+  .todo-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+    word-break: break-word;
+
+    &.completed {
+      color: var(--color-success);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: var(--color-success);
+      opacity: 0.7;
+    }
+
+    &.deleted {
+      color: var(--color-danger);
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: var(--color-danger);
+      text-decoration-style: wavy;
+      opacity: 0.5;
+    }
+  }
+
+  // 时间
+  .todo-time {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+  }
+
+  // 删除动画
+  &.removing {
+    animation: slideOutRight 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  &.completing {
+    animation: pulseGreen 0.5s ease;
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+    max-height: 80px;
+    margin-bottom: 10px;
+  }
+  50% {
+    transform: translateX(100%);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+}
+
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
