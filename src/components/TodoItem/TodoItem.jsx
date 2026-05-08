@@ -14,7 +14,7 @@ export default function TodoItem({ todo, onToggleComplete, onMarkDeleted }) {
 
   const bind = useDrag(
     ({ movement: [mx], active, direction: [dx], velocity: [vx] }) => {
-      // 如果已删除或已完成，不允许滑动
+      // 如果已删除，不允许滑动
       if (todo.deleted) return
 
       setIsDragging(active)
@@ -30,7 +30,7 @@ export default function TodoItem({ todo, onToggleComplete, onMarkDeleted }) {
         const isLeftSwipe = mx < -SWIPE_THRESHOLD || (isFastSwipe && dx < 0)
         const isRightSwipe = mx > SWIPE_THRESHOLD || (isFastSwipe && dx > 0)
 
-        if (isLeftSwipe && !todo.completed) {
+        if (isLeftSwipe) {
           // 左滑 → 删除
           setOffsetX(-150)
           setTimeout(() => {
